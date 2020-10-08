@@ -1,0 +1,44 @@
+const { Schema, model } = require('mongoose');
+
+const UsuarioSchema = new Schema({
+   nombre: {
+      type: String,
+      required: true
+   },
+   correo: {
+      type: String,
+      required: true,
+      unique: true
+   },
+   password: {
+      type: String,
+      required: true,
+   },
+   img: {
+      type: String,
+   },
+   role: {
+      type: String,
+      required: true,
+      default: 'USER_ROLE'
+   },
+   google: {
+      type: Boolean,
+      default: false
+   },
+   // Activar o Desactivar un usuario 
+   // activado: {
+   //    type: Boolean,
+   //    default: true
+   // }
+}, {
+   versionKey: false
+});
+
+UsuarioSchema.method('toJSON', function() {
+   const {_id, password, ...object} = this.toObject();
+   object.uid = _id;
+   return object;
+});
+
+module.exports = model('Usuario', UsuarioSchema);
